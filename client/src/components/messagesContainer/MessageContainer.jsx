@@ -3,9 +3,13 @@ import Messages from "./Messages";
 import MessageInput from "./MessageInput";
 import useConversation from "../../zustand/useConversation";
 import { IoArrowBackOutline } from "react-icons/io5";
+import { useSocketContext } from "../../context/SocketContext";
 
 const MessageContainer = () => {
   const { selectedConversation, setSelectedConversation } = useConversation();
+
+  const { onlineUsers } = useSocketContext();
+  const isOnline = onlineUsers.includes(selectedConversation._id);
 
   return (
     <div className="flex flex-col h-screen w-full">
@@ -20,7 +24,13 @@ const MessageContainer = () => {
             <span className="text-gray-900 font-bold">
               {selectedConversation.fullname}
             </span>
-            <span className="text-green-500 text-sm">Online</span>
+            <span
+              className={`${
+                isOnline ? "text-green-500" : "text-gray-800"
+              } text-sm`}
+            >
+              {isOnline ? "Online" : "Oflline"}
+            </span>
           </div>
         </div>
         <div className="flex items-center justify-center">

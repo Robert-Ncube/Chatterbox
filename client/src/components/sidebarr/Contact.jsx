@@ -1,10 +1,14 @@
 import React from "react";
 import useConversation from "../../zustand/useConversation";
+import { useSocketContext } from "../../context/SocketContext";
 
 const Contact = ({ contact }) => {
   const { selectedConversation, setSelectedConversation } = useConversation();
 
   const isSelected = selectedConversation?._id === contact._id;
+
+  const { onlineUsers } = useSocketContext();
+  const isOnline = onlineUsers.includes(contact._id);
 
   return (
     <div className="">
@@ -14,7 +18,7 @@ const Contact = ({ contact }) => {
         }`}
         onClick={() => setSelectedConversation(contact)}
       >
-        <div className="avatar online">
+        <div className={`avatar ${isOnline ? "online" : ""}`}>
           <div className="w-12 rounded-full">
             <img src={contact.profilePic} alt="User Avatar" />
           </div>

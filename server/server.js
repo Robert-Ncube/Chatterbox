@@ -6,7 +6,7 @@ import mongoose from "mongoose";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
 
-const app = express();
+import { app, httpServer } from "./socket/socket.js";
 
 dotenv.config();
 
@@ -21,7 +21,7 @@ mongoose
   .connect(process.env.MONGODB_URI)
   .then(() => {
     console.log("Connected to MongoDB");
-    app.listen(PORT, () => {
+    httpServer.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
     });
   })
