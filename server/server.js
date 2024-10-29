@@ -10,11 +10,22 @@ import { app, httpServer } from "./socket/socket.js";
 
 dotenv.config();
 
+//deployment*
+import path from "path";
+const __dirname = path.resolve();
+
 app.use(express.json());
 app.use(cors());
 app.use(morgan("dev"));
 app.use(cookieParser());
 app.use("/api", AllRoutes);
+
+//deployment*
+// Serve static assets in production
+app.use(express.static(path.join(__dirname, "client/dist")));
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client/dist/index.html"));
+});
 
 const PORT = process.env.PORT || 5000;
 mongoose
