@@ -1,21 +1,27 @@
 import React from "react";
-import { RiContactsBook3Line } from "react-icons/ri";
+import useConversation from "../../zustand/useConversation";
 
-const Contact = () => {
+const Contact = ({ contact }) => {
+  const { selectedConversation, setSelectedConversation } = useConversation();
+
+  const isSelected = selectedConversation?._id === contact._id;
+
   return (
     <div className="">
-      <div className="flex gap-2 items-center hover:bg-sky-500 rounded-lg p-2 py-1 cursor-pointer">
+      <div
+        className={`flex gap-2 items-center hover:bg-sky-500 rounded-lg p-2 py-1 cursor-pointer ${
+          isSelected ? "bg-sky-500" : ""
+        }`}
+        onClick={() => setSelectedConversation(contact)}
+      >
         <div className="avatar online">
           <div className="w-12 rounded-full">
-            <img
-              src="https://avatar.iran.liara.run/public/boy?username=podza"
-              alt="User Avatar"
-            />
+            <img src={contact.profilePic} alt="User Avatar" />
           </div>
         </div>
         <div className="flex flex-col flex-1">
           <div className="flex gap-3 justify-between">
-            <p className="font-bold text-slate-800">John Doe </p>
+            <p className="font-bold text-slate-800">{contact.username}</p>
           </div>
         </div>
       </div>

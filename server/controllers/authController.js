@@ -44,7 +44,7 @@ export const signup = async (req, res) => {
       return res.status(400).json({ error: "Passwords do not match!" });
     }
 
-    const user = await User.findOne({ email, username });
+    const user = await User.findOne({ email });
     if (user) {
       return res.status(400).json({ error: "Email already exists!" });
     }
@@ -67,10 +67,11 @@ export const signup = async (req, res) => {
       email,
       password: hashedPassword,
       gender,
-      profilePic: gender === "Male" ? boyProfilePic : girlProfilePic,
+      profilePic: gender === "male" ? boyProfilePic : girlProfilePic,
     });
 
     await newUser.save();
+    const token = generateTokenAndSetCookie(newUser._id, res);
     res.status(201).json({
       message: "User registered successfully!",
       data: {
@@ -81,6 +82,7 @@ export const signup = async (req, res) => {
           email: newUser.email,
           gender: newUser.gender,
           profilePic: newUser.profilePic,
+          token,
         },
       },
     });
