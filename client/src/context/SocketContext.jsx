@@ -16,7 +16,10 @@ export const SocketProvider = ({ children }) => {
   useEffect(() => {
     let newSocket;
     if (authUser) {
-      newSocket = io("http://localhost:8000", {
+      const devURL = "http://localhost:8000";
+      const prodURL = "https://chatterbox-8ksu.onrender.com/";
+
+      newSocket = io(prodURL, {
         query: { userId: authUser._id },
       });
       newSocket.on("connect", () => {
